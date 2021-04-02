@@ -1,44 +1,32 @@
 import suffix_tree
-
-def traverse(string, suffix):
-    i = 0
-    while i<len(suffix) and string[i]==suffix[i]:
-        i+=1
-    return i
+def traverse(node,suffix):
+    if suffix[0]!='$':
+        index = ord(suffix[0]) - 96
+    else:
+        index = 0
+    active_node = node
+    if active_node.edge[index]==0:
+        return active_node
 
 def build_suffix_tree(string):
-    tree = suffix_tree.Tree()
-
     i = 0
-    j = 0
-
+    string = string+"$"
+    tree = suffix_tree.Tree()
     while i<len(string):
-        index = ord(string[i]) - 96
-
-        if tree.root.edge[index]==0:
-            text = string[i:len(string)]+'$'
-            tree.root.edge[index] = suffix_tree.Edge(text, suffix_tree.Node())
-
+        suffix = string[i:len(string)]
+        node = tree.root
+        active_node = traverse(node,suffix)
+        if suffix[0]!='$':
+            index = ord(suffix[0]) - 96
         else:
-            text = tree.root.edge[index].string
-            suffix = string[i:len(string)]+"$"
-            branch_index = traverse(text, suffix)
-            #create new edge
-            if branch_index!=len(suffix) - 1:
-                char_index = ord(suffix[branch_index]) - 96
-            else:
-                char_index = 0
-            branch_text = suffix[branch_index:len(suffix)]
-            tree.root.edge[index].next.edge[char_index] = suffix_tree.Edge(branch_text, suffix_tree.Node())
-
-            #split branch
-            
-
+            index = 0
+        if active_node != None:
+            active_node.edge[index] = suffix_tree.Edge(suffix, suffix_tree.Node())
         i+=1
+    
     return tree
-
 
 text = "abaa"
 tree = build_suffix_tree(text)
-print(tree.root.edge[1].next.edge[1].string)
+print(tree.root.edge[0])
 
