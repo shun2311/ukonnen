@@ -7,6 +7,6 @@ class Node:
         self.edge = [0]*26
 
 class Edge:
-    def __init__(self, string, next_node):
+    def __init__(self, string, next_node=None):
         self.string = string
         self.next = next_node
