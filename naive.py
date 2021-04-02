@@ -28,6 +28,7 @@ def traverse(node,suffix):
         index = get_index(string[active_len-1])
         active_node = active_node.edge[index].next
         index = get_index(suffix[i])
+        #if branch does not exist branch from the current active node
         if active_node.edge[index]==0:
             return (i, active_len, active_node)
 
@@ -57,14 +58,14 @@ def build_suffix_tree(string):
             active_node.edge[index].string = before_branch
             char_index = get_index(after_branch[0])
             active_node.edge[index].next.edge[char_index] = ukkonnen.Edge(after_branch)
-            char_index = get_index(suffix[0])
+            char_index = get_index(suffix_branch[0])
+            print("suffix_branch: "+suffix_branch)
+            print("char_index: "+str(char_index))
             active_node.edge[index].next.edge[char_index] = ukkonnen.Edge(suffix_branch)
-            #print("tree_node: "+str(tree.root.edge[index].next.edge))
         i+=1
-    
     return tree
 
 text = "abaa"
 tree = build_suffix_tree(text)
-print(tree.root.edge[1].next.edge[0])
+#print(tree.root.edge[1].next.edge)
 
