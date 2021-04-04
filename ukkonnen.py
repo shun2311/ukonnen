@@ -9,12 +9,10 @@ class Node:
         self.suffix_id = suffix_id
 
 class Edge:
-    def __init__(self, string):
-        self.string = string
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
         self.next = Node()
-    
-    def __str__(self):
-        return self.string
 
 def rule_1():
     return True
@@ -37,11 +35,17 @@ def ukkonnen(string):
             index = get_index(string[j])
             #Rule 2
             if active_node.edge[index]==0:
-                active_node.edge[index] = Edge(string[j:i+1])
+                active_node.edge[index] = Edge(j, i)
+            #traverse through tree
+            #else:
+                #complete_traverse = False
+                #while not complete_traverse:
+
             j+=1
         j = 0
         i += 1
     return tree
 
 tree  = ukkonnen("abc")
-print(tree.root.edge[])
+print(tree.root.edge[2].start)
+print(tree.root.edge[2].end)
