@@ -24,11 +24,23 @@ def traverse(active_node,index, string, j, i):
     active_len = 0
     start = active_node.edge[index].start
     end = active_node.edge[index].end
-
-    while active_len<=start-end:
-        if string[j+active_len]!=string[start+active_len]:
-            return
+    count = 0
+    while j+count<=i:
+        #rule 2
+        if string[j+count]!=string[start+active_len]:
+            old_end = end
+            #set new end for old branch
+            active_node.edge[index].end = start+active_len
+            #set new active node to branch out
+            active_node = active_node.edge[index].next
+            index = get_index(string[start+active_len])
+            active_node.edge[index] = Edge(start+active_len, end)
+            index = get_index(string[j+count])
+            active_node.edge[index] = Edge(j+count, i)
+            return 
         active_len+=1
+        count+=1
+    
     active_node.edge[index].end = i
 
 def ukkonnen(string):
@@ -52,7 +64,10 @@ def ukkonnen(string):
         i += 1
     return tree
 
-tree  = ukkonnen("abaa")
+string = 'abaa'
+tree  = ukkonnen(string)
+string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[2].start)
-print(tree.root.edge[2].end)
+print(tree.root.edge[1].next.edge[2].start)
+print(tree.root.edge[1].next.edge[2].end)
+#print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
