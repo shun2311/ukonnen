@@ -25,6 +25,7 @@ def traverse(active_node,index, string, j, i):
     start = active_node.edge[index].start
     end = active_node.edge[index].end
     count = 0
+    
     while j+count<=i:
         #rule 2
         if string[j+count]!=string[start+active_len]:
@@ -39,8 +40,8 @@ def traverse(active_node,index, string, j, i):
             index = get_index(string[j+count])
             active_node.edge[index] = Edge(j+count, i)
             return
-        #reach end of edge, move to next node
-        if start+active_len == end:
+        #reach end of edge, move to next node but only move to next node if tree traversal is not complete
+        if start+active_len == end and j+count<i:
             active_node = active_node.edge[index].next
             index = get_index(string[j+count+1])
             #Rule 2: branch does not exist, extend branch from node
@@ -82,6 +83,6 @@ string = 'abaa'
 tree  = ukkonnen(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[1].next.edge[0].start)
-print(tree.root.edge[1].next.edge[0].end)
+print(tree.root.edge[1].next.edge[2].start)
+print(tree.root.edge[1].next.edge[2].end)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
