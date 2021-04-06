@@ -14,12 +14,11 @@ class End:
     def __init__(self, value):
         self.value = value
 
-
 class SuffixTree:
     def __init__(self, text):
         self.root = Node()
         self.text = text 
-        self.e = End(-1)
+        self.global_end = End(-1)
 
         self.ukkonnen()
 
@@ -81,6 +80,8 @@ class SuffixTree:
 
         while i < len(self.text):
             j = 0
+            #rapid leaf extension
+            self.global_end.value += 1
             while j<=i:
                 active_node = self.root
                 index = self.get_index(self.text[j])
@@ -98,4 +99,5 @@ string = 'abaa$'
 #print(tree.root.edge)
 print(tree.root.edge[0].start)
 print(tree.root.edge[0].end)
+print(tree.global_end.value)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
