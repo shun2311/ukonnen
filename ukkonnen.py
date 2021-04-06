@@ -60,6 +60,7 @@ class SuffixTree:
                 else:
                     end = active_node.edge[index].end.value
                 continue
+            
             #Rule 2: branch from edge
             if self.text[j+count]!=self.text[start+active_len]:
                 #set new end for old branch
@@ -72,13 +73,11 @@ class SuffixTree:
                 index = self.get_index(self.text[j+count])
                 active_node.edge[index] = Edge(j+count, self.global_end)
                 return
-            
-            
+        
             active_len+=1
             count+=1
             self.comp_count+=1
-
-        
+  
     def ukkonnen(self):
         i = 0
         #phase 0
