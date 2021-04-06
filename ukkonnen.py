@@ -38,23 +38,11 @@ class SuffixTree:
         count = 0
         
         while j+count<=i:
+            #Trick: skip count
             if i>=end:
                 active_len = end - start
                 count += end - start
 
-            #rule 2
-            if self.text[j+count]!=self.text[start+active_len]:
-                #set new end for old branch
-                active_node.edge[index].next.is_leaf = False
-                active_node.edge[index].end = start+active_len-1
-                #set new active node to branch out
-                active_node = active_node.edge[index].next
-                index = self.get_index(self.text[start+active_len])
-                active_node.edge[index] = Edge(start+active_len, self.global_end)
-                index = self.get_index(self.text[j+count])
-                active_node.edge[index] = Edge(j+count, self.global_end)
-                return
-            
             #reach end of edge, move to next node
             if start+active_len == end and j+count<i:
                 active_node = active_node.edge[index].next
@@ -72,6 +60,20 @@ class SuffixTree:
                 else:
                     end = active_node.edge[index].end.value
                 continue
+            #Rule 2: branch from edge
+            if self.text[j+count]!=self.text[start+active_len]:
+                #set new end for old branch
+                active_node.edge[index].next.is_leaf = False
+                active_node.edge[index].end = start+active_len-1
+                #set new active node to branch out
+                active_node = active_node.edge[index].next
+                index = self.get_index(self.text[start+active_len])
+                active_node.edge[index] = Edge(start+active_len, self.global_end)
+                index = self.get_index(self.text[j+count])
+                active_node.edge[index] = Edge(j+count, self.global_end)
+                return
+            
+            
             active_len+=1
             count+=1
             self.comp_count+=1
@@ -97,11 +99,12 @@ class SuffixTree:
                     self.traverse(active_node,index, j, i)    
                 j+=1
             i += 1
-        print(self.comp_count)
-string = 'abac'
+        print("no of string comparisons:" + str(self.comp_count))
+
+string = 'abaa'
 tree  = SuffixTree(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[1].next.edge[3].start)
-print(tree.root.edge[1].next.edge[3].end.value)
+print(tree.root.edge[1].next.edge[0].start)
+print(tree.root.edge[1].next.edge[0].end.value)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
