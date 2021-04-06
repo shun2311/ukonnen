@@ -31,7 +31,7 @@ def traverse(active_node,index, string, j, i):
         if string[j+count]!=string[start+active_len]:
             old_end = end
             #set new end for old branch
-            active_node.edge[index].is_leaf = False
+            active_node.edge[index].next.is_leaf = False
             active_node.edge[index].end = start+active_len-1
             #set new active node to branch out
             active_node = active_node.edge[index].next
@@ -63,7 +63,6 @@ def traverse(active_node,index, string, j, i):
             continue
         active_len+=1
         count+=1
-    active_node.edge[index].end = i
 
 def ukkonnen(string):
     i = 0
@@ -86,10 +85,10 @@ def ukkonnen(string):
         i += 1
     return tree
 
-string = 'abaa'
+string = 'abac'
 tree  = ukkonnen(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[2].start)
-print(tree.root.edge[2].end)
+print(tree.root.edge[1].next.edge[2].start)
+print(tree.root.edge[1].next.edge[2].end)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
