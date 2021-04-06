@@ -54,7 +54,7 @@ class SuffixTree:
             #reach end of edge, move to next node
             if start+active_len == end and j+count<i:
                 active_node = active_node.edge[index].next
-                index = self.get_index(string[j+count+1])
+                index = self.get_index(self.text[j+count+1])
                 #Rule 2: branch does not exist, extend branch from node
                 if active_node.edge[index] == 0:
                     active_node.edge[index] = Edge(j+count+1,self.global_end)
@@ -93,10 +93,10 @@ class SuffixTree:
                 j+=1
             i += 1
 
-string = 'abac'
+string = 'abaa'
 tree  = SuffixTree(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[2].start)
-print(tree.root.edge[2].end.value)
+print(tree.root.edge[0].start)
+print(tree.root.edge[0].end.value)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
