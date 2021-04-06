@@ -19,7 +19,7 @@ class SuffixTree:
         self.root = Node()
         self.text = text 
         self.global_end = End(-1)
-
+        self.comp_count = 0
         self.ukkonnen()
 
     def get_index(self, char):
@@ -36,8 +36,13 @@ class SuffixTree:
         else:
             end = active_node.edge[index].end.value
         count = 0
-        
+
         while j+count<=i:
+            #Trick: skip count
+            #skip comparison if substring already exist
+            if i>end:
+                active_len = end - start + 1
+                count += end - start + 1
             #rule 2
             if self.text[j+count]!=self.text[start+active_len]:
                 #set new end for old branch
@@ -70,6 +75,8 @@ class SuffixTree:
                 continue
             active_len+=1
             count+=1
+            self.comp_count+=1
+
         
     def ukkonnen(self):
         i = 0
@@ -79,8 +86,7 @@ class SuffixTree:
 
         while i < len(self.text):
             j = 0
-
-            #rapid leaf extension trick
+            #Trick: rapid leaf extension
             self.global_end.value += 1
             while j<=i:
                 active_node = self.root
@@ -92,11 +98,11 @@ class SuffixTree:
                     self.traverse(active_node,index, j, i)    
                 j+=1
             i += 1
-
-string = 'abaa'
+        print(self.comp_count)
+string = 'abac'
 tree  = SuffixTree(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[0].start)
-print(tree.root.edge[0].end.value)
+print(tree.root.edge[1].next.edge[3].start)
+print(tree.root.edge[1].next.edge[3].end.value)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
