@@ -31,19 +31,18 @@ class SuffixTree:
 
     def traverse(self, index, j, i): 
         active_len = 0
+        count = 0
         start = self.current_node.edge[index].start
         if type(self.current_node.edge[index].end) is int:
             end = self.current_node.edge[index].end
         else:
             end = self.current_node.edge[index].end.value
-        count = 0
         
         while j+count<=i:
             #Trick: skip count
             if i>end:
                 active_len = end - start + 1
                 count += end - start + 1
-
             #reach end of edge, move to next node
             if start+active_len == end and j+count<i:
                 self.current_node = self.current_node.edge[index].next
@@ -81,12 +80,13 @@ class SuffixTree:
   
     def ukkonnen(self):
         i = 0
+        
         self.text = self.text +'$'
 
         while i < len(self.text):
-            j = 0
             #Trick: rapid leaf extension
             self.global_end.value += 1
+            j = 0
             while j<=i:
                 self.current_node = self.root
                 index = self.get_index(self.text[j])
@@ -99,10 +99,10 @@ class SuffixTree:
             i += 1
         print("no of string comparisons:" + str(self.comp_count))
 
-string = 'abaa'
+string = 'abac'
 tree  = SuffixTree(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[1].next.edge[1].start)
-print(tree.root.edge[1].next.edge[1].end.value)
+print(tree.root.edge[1].next.edge[0].start)
+print(tree.root.edge[1].next.edge[0].end.value)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
