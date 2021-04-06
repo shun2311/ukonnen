@@ -97,6 +97,11 @@ string = 'abaa'
 tree  = SuffixTree(string)
 string = 'abaa$'
 #print(tree.root.edge)
+<<<<<<< Updated upstream
 print(tree.root.edge[0].start)
 print(tree.root.edge[0].end.value)
+=======
+print(tree.root.edge[1].next.edge[2].start)
+print(tree.root.edge[1].next.edge[2].end.value)
+>>>>>>> Stashed changes
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
