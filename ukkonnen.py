@@ -1,7 +1,3 @@
-class Tree:
-    def __init__(self):
-        self.root = Node()
-
 class Node:
     def __init__(self, is_leaf = True, suffix_id=None):
         self.edge = [0]*27
@@ -22,7 +18,7 @@ def get_index(char):
 
 class SuffixTree:
     def __init__(self, text):
-        self.tree = Tree()
+        self.root = Node()
         self.text = text 
         
         self.ukkonnen()
@@ -74,13 +70,13 @@ class SuffixTree:
     def ukkonnen(self):
         i = 0
         #phase 0
-        active_node = self.tree.root
+        active_node = self.root
         self.text = self.text +'$'
 
         while i < len(self.text):
             j = 0
             while j<=i:
-                active_node = self.tree.root
+                active_node = self.root
                 index = get_index(self.text[j])
                 #Rule 2
                 if active_node.edge[index]==0:
@@ -91,9 +87,9 @@ class SuffixTree:
             i += 1
 
 string = 'abac'
-suffix_tree  = SuffixTree(string)
+tree  = SuffixTree(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(suffix_tree.tree.root.edge[0].start)
-print(suffix_tree.tree.root.edge[0].end)
+print(tree.root.edge[0].start)
+print(tree.root.edge[0].end)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
