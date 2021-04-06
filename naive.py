@@ -39,6 +39,7 @@ def build_suffix_tree(string):
     tree = ukkonnen.Tree()
     while i<len(string):
         suffix = string[i:len(string)]
+        print("suffix: "+suffix)
         node = tree.root
         traverse_tuple = traverse(node,suffix)
         suffix_index = traverse_tuple[0]
@@ -55,17 +56,16 @@ def build_suffix_tree(string):
             before_branch = text_branch[0:active_len]
             after_branch = text_branch[active_len:len(text_branch)]
             suffix_branch = suffix[suffix_index:len(suffix)]
+            print("suffix branch: "+ suffix_branch)
             active_node.edge[index].string = before_branch
             char_index = get_index(after_branch[0])
             active_node.edge[index].next.edge[char_index] = ukkonnen.Edge(after_branch)
             char_index = get_index(suffix_branch[0])
-            print("suffix_branch: "+suffix_branch)
-            print("char_index: "+str(char_index))
             active_node.edge[index].next.edge[char_index] = ukkonnen.Edge(suffix_branch)
         i+=1
     return tree
 
 text = "abaa"
 tree = build_suffix_tree(text)
-#print(tree.root.edge[1].next.edge)
+print(tree.root.edge[1].next.edge)
 

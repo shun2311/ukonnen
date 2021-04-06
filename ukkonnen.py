@@ -10,18 +10,24 @@ class Edge:
         self.end = end
         self.next = Node()
 
-def get_index(char):
-    if char != '$':
-        return ord(char) - 96
-    else:
-        return 0 
+class End:
+    def __init__(self, value):
+        self.value = value
+
 
 class SuffixTree:
     def __init__(self, text):
         self.root = Node()
         self.text = text 
-        
+        self.e = End(-1)
+
         self.ukkonnen()
+
+    def get_index(self, char):
+        if char != '$':
+            return ord(char) - 96
+        else:
+            return 0 
 
     def traverse(self, active_node, index, j, i): 
         active_len = 0
@@ -38,9 +44,9 @@ class SuffixTree:
                 active_node.edge[index].end = start+active_len-1
                 #set new active node to branch out
                 active_node = active_node.edge[index].next
-                index = get_index(self.text[start+active_len])
+                index = self.get_index(self.text[start+active_len])
                 active_node.edge[index] = Edge(start+active_len, end)
-                index = get_index(self.text[j+count])
+                index = self.get_index(self.text[j+count])
                 active_node.edge[index] = Edge(j+count, i)
                 return
             
@@ -53,7 +59,7 @@ class SuffixTree:
                     active_node.edge[index].end = i
                     return
                 active_node = active_node.edge[index].next
-                index = get_index(string[j+count+1])
+                index = self.get_index(string[j+count+1])
                 #Rule 2: branch does not exist, extend branch from node
                 if active_node.edge[index] == 0:
                     active_node.edge[index] = Edge(j+count+1,i)
@@ -66,7 +72,7 @@ class SuffixTree:
                 continue
             active_len+=1
             count+=1
-
+        
     def ukkonnen(self):
         i = 0
         #phase 0
@@ -77,7 +83,7 @@ class SuffixTree:
             j = 0
             while j<=i:
                 active_node = self.root
-                index = get_index(self.text[j])
+                index = self.get_index(self.text[j])
                 #Rule 2
                 if active_node.edge[index]==0:
                     active_node.edge[index] = Edge(j, i)
