@@ -31,43 +31,42 @@ class SuffixTree:
     def traverse(self, active_node, index, j, i): 
         active_len = 0
         start = active_node.edge[index].start
-        end = active_node.edge[index].end
+        if type(active_node.edge[index].end) is int:
+            end = active_node.edge[index].end
+        else:
+            end = active_node.edge[index].end.value
         count = 0
         
         while j+count<=i:
             #rule 2
             if self.text[j+count]!=self.text[start+active_len]:
-                old_end = end
                 #set new end for old branch
                 active_node.edge[index].next.is_leaf = False
                 active_node.edge[index].end = start+active_len-1
                 #set new active node to branch out
                 active_node = active_node.edge[index].next
                 index = self.get_index(self.text[start+active_len])
-                active_node.edge[index] = Edge(start+active_len, end)
+                active_node.edge[index] = Edge(start+active_len, self.global_end)
                 index = self.get_index(self.text[j+count])
-                active_node.edge[index] = Edge(j+count, i)
+                active_node.edge[index] = Edge(j+count, self.global_end)
                 return
             
-            #reach end of edge, either:
-            #1) extend leaf
-            #2) move to next node
+            #reach end of edge, move to next node
             if start+active_len == end and j+count<i:
-                #Rule 1: reach a leaf, extend the leaf
-                if active_node.edge[index].next.is_leaf and i-(j+count)==1:
-                    active_node.edge[index].end = i
-                    return
                 active_node = active_node.edge[index].next
                 index = self.get_index(string[j+count+1])
                 #Rule 2: branch does not exist, extend branch from node
                 if active_node.edge[index] == 0:
-                    active_node.edge[index] = Edge(j+count+1,i)
+                    active_node.edge[index] = Edge(j+count+1,self.global_end)
                     return
                 #else continue to traverse through tree
                 active_len=0
                 count+=1
                 start = active_node.edge[index].start
-                end = active_node.edge[index].end
+                if type(active_node.edge[index].end) is int:
+                    end = active_node.edge[index].end
+                else:
+                    end = active_node.edge[index].end.value
                 continue
             active_len+=1
             count+=1
@@ -80,14 +79,15 @@ class SuffixTree:
 
         while i < len(self.text):
             j = 0
-            #rapid leaf extension
+
+            #rapid leaf extension trick
             self.global_end.value += 1
             while j<=i:
                 active_node = self.root
                 index = self.get_index(self.text[j])
                 #Rule 2
                 if active_node.edge[index]==0:
-                    active_node.edge[index] = Edge(j, i)
+                    active_node.edge[index] = Edge(j, self.global_end)
                 else:
                     self.traverse(active_node,index, j, i)    
                 j+=1
@@ -97,7 +97,6 @@ string = 'abac'
 tree  = SuffixTree(string)
 string = 'abaa$'
 #print(tree.root.edge)
-print(tree.root.edge[0].start)
-print(tree.root.edge[0].end)
-print(tree.global_end.value)
+print(tree.root.edge[2].start)
+print(tree.root.edge[2].end.value)
 #print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
