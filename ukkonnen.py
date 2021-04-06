@@ -36,13 +36,12 @@ class SuffixTree:
         else:
             end = active_node.edge[index].end.value
         count = 0
-
+        
         while j+count<=i:
-            #Trick: skip count
-            #skip comparison if substring already exist
-            if i>end:
-                active_len = end - start + 1
-                count += end - start + 1
+            if i>=end:
+                active_len = end - start
+                count += end - start
+
             #rule 2
             if self.text[j+count]!=self.text[start+active_len]:
                 #set new end for old branch
