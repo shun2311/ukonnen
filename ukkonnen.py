@@ -40,9 +40,9 @@ class SuffixTree:
         
         while j+count<=i:
             #Trick: skip count
-            if i>=end:
-                active_len = end - start
-                count += end - start
+            if i>end:
+                active_len = end - start + 1
+                count += end - start + 1
 
             #reach end of edge, move to next node
             if start+active_len == end and j+count<i:
