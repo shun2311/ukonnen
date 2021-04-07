@@ -86,10 +86,6 @@ class SuffixTree:
             #Trick: rapid leaf extension
             self.global_end.value += 1
             while j<=i:
-                #print("string: "+self.text[j:i+1])
-                #print("previous node: "+str(self.active_node.previous))
-                #print("j: "+str(j))
-                #print("i: "+str(i))
                 index = self.get_index(self.text[j+self.count])
 
                 if self.active_len == 0:
@@ -118,7 +114,5 @@ class SuffixTree:
 string = 'abac'
 tree  = SuffixTree(string)
 string = 'abaa$'
-#print(tree.root.edge)
 print(tree.root.edge[1].next.edge[3].start)
 print(tree.root.edge[1].next.edge[3].end.value)
-#print(string[tree.root.edge[1].next.edge[1].start:tree.root.edge[1].next.edge[1].end+1])
